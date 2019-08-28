@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { render } from "react-dom";
 
 class App extends React.Component {
@@ -7,12 +7,22 @@ class App extends React.Component {
       { id: 1, nom: "Jacobson" },
       { id: 2, nom: "Spice inc" },
       { id: 3, nom: "Domo Bank" }
-    ]
+    ],
+    compteur: 0
   };
 
-  handleClick(e) {
-    alert("Bonjour");
-  }
+  //utiliser des foncitons flechées pour de meilleurs performance//
+  handleClick = e => {
+    console.log(this.state.clients);
+    this.setState({ compteur: this.state.compteur + 1 });
+    /* let clients = this.state.clients.slice();
+   clients.push({ id: 3, nom: "Domo Bank" });
+    this.setState({clients});*/
+  };
+
+  handleClient = () => {
+    //
+  };
 
   render() {
     const title = "Liste des clients";
@@ -21,6 +31,7 @@ class App extends React.Component {
       <div>
         <h1>{title}</h1>
         <button onClick={this.handleClick}>click me</button>
+        {this.state.compteur}
         <ul>
           {this.state.clients.map(client => (
             <li>
@@ -31,7 +42,7 @@ class App extends React.Component {
         </ul>
         <form>
           <input type="text" placeholder="ajouter un client" />
-          <button>Confirmer</button>
+          <button onClick={this.handleClick}>Confirmer</button>
         </form>
       </div>
     );
