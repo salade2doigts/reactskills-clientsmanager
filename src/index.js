@@ -11,8 +11,21 @@ class App extends React.Component {
     compteur: 0
   };
 
+  handleDelete = id => {
+    console.log(id);
+    const clients = this.state.clients.slice();
+    //index cherche l'id correspondant au client puis l'on retire
+    //le client correspondant
+    const index = clients.findIndex(function(client) {
+      return client.id === id;
+    });
+    clients.splice(index, 1);
+    this.setState({ clients: clients });
+  };
+
   //utiliser des foncitons flechées pour de meilleurs performance//
   handleClick = e => {
+    e.preventDefault();
     console.log(this.state.clients);
     this.setState({ compteur: this.state.compteur + 1 });
     /* let clients = this.state.clients.slice();
@@ -21,7 +34,10 @@ class App extends React.Component {
   };
 
   handleClient = () => {
-    //
+    //copie toujours l'état avant d'agir dessus
+    const clients = this.state.clients.slice();
+    clients.push({ id: 4, nom: "Dupont andco" });
+    this.setState({ clients: clients });
   };
 
   render() {
@@ -34,15 +50,15 @@ class App extends React.Component {
         {this.state.compteur}
         <ul>
           {this.state.clients.map(client => (
-            <li>
+            <li key={client.id}>
               {client.nom}
-              <button>X</button>
+              <button onClick={() => this.handleDelete(client.id)}>X</button>
             </li>
           ))}
         </ul>
         <form>
           <input type="text" placeholder="ajouter un client" />
-          <button onClick={this.handleClick}>Confirmer</button>
+          <button onClick={this.handleClient}>Confirmer</button>
         </form>
       </div>
     );
