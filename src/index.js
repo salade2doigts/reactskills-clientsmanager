@@ -8,7 +8,8 @@ class App extends React.Component {
       { id: 2, nom: "Spice inc" },
       { id: 3, nom: "Domo Bank" }
     ],
-    compteur: 0
+    compteur: 0,
+    nouveauClient: ""
   };
 
   handleDelete = id => {
@@ -16,9 +17,7 @@ class App extends React.Component {
     const clients = this.state.clients.slice();
     //index cherche l'id correspondant au client puis l'on retire
     //le client correspondant
-    const index = clients.findIndex(function(client) {
-      return client.id === id;
-    });
+    const index = clients.findIndex(client => client.id === id);
     clients.splice(index, 1);
     this.setState({ clients: clients });
   };
@@ -33,11 +32,24 @@ class App extends React.Component {
     this.setState({clients});*/
   };
 
-  handleClient = () => {
+  handleSubmit = e => {
     //copie toujours l'état avant d'agir dessus
+    e.preventDefault();
+    //définition de la valeur des clefs
+    const id = new Date().getTime();
+    const nom = this.state.nouveauClient;
+    //définition de nos objets state
+    const client = { id: id, nom: nom };
     const clients = this.state.clients.slice();
-    clients.push({ id: 4, nom: "Dupont andco" });
-    this.setState({ clients: clients });
+    //ajout plus changement du state
+    clients.push(client);
+    this.setState({ clients: clients, nouveauClient: "" });
+  };
+
+  handleChange = e => {
+    console.log(e.currentTarget.value);
+    const value = e.currentTarget.value;
+    this.setState({ nouveauClient: value });
   };
 
   render() {
@@ -56,9 +68,14 @@ class App extends React.Component {
             </li>
           ))}
         </ul>
-        <form>
-          <input type="text" placeholder="ajouter un client" />
-          <button onClick={this.handleClient}>Confirmer</button>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            onChange={this.handleChange}
+            value={this.state.nouveauClient}
+            type="text"
+            placeholder="ajouter un client"
+          />
+          <button type="submit">Confirmer</button>
         </form>
       </div>
     );
