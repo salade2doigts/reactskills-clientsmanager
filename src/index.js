@@ -32,8 +32,7 @@ class App extends React.Component {
     //définition de nos objets state
     const clients = [...this.state.clients];
     //ajout plus changement du state
-    console.log(client);
-    clients.push({ client });
+    clients.push(client);
     this.setState({ clients });
   };
   render() {
@@ -46,7 +45,11 @@ class App extends React.Component {
         {this.state.compteur}
         <ul>
           {this.state.clients.map(client => (
-            <Client infosClient={client} onDelete={this.handleDelete} />
+            <Client
+              key={client.id}
+              infosClient={client}
+              onDelete={this.handleDelete}
+            />
           ))}
         </ul>
         <ClientForm onClientAdd={this.handleAdd} />

@@ -6,7 +6,7 @@ class Client extends React.Component {
     //const onDelete = this.props.onDelete;
     const { infosClient, onDelete } = this.props;
     return (
-      <li key={infosClient.id}>
+      <li>
         {infosClient.nom}
         <button onClick={() => onDelete(infosClient.id)}>X</button>
       </li>
@@ -15,3 +15,14 @@ class Client extends React.Component {
 }
 
 export default Client;
+
+/*Or
+
+const Client = ({ details, onDelete }) => (
+  <li>
+    {details.nom} <button onClick={() => onDelete(details.id)}>X</button>
+  </li>
+);
+
+export default Client;
+*/
