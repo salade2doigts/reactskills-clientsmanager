@@ -1,5 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
+import Client from "./Client";
+import ClientForm from "./ClientForm";
 
 class App extends React.Component {
   state = {
@@ -8,50 +10,32 @@ class App extends React.Component {
       { id: 2, nom: "Spice inc" },
       { id: 3, nom: "Domo Bank" }
     ],
-    compteur: 0,
-    nouveauClient: ""
+    compteur: 0
   };
 
   handleDelete = id => {
-    console.log(id);
-    const clients = this.state.clients.slice();
+    const clients = [...this.state.clients];
     //index cherche l'id correspondant au client puis l'on retire
     //le client correspondant
     const index = clients.findIndex(client => client.id === id);
     clients.splice(index, 1);
-    this.setState({ clients: clients });
+    this.setState({ clients });
   };
 
   //utiliser des foncitons flechées pour de meilleurs performance//
   handleClick = e => {
     e.preventDefault();
-    console.log(this.state.clients);
     this.setState({ compteur: this.state.compteur + 1 });
-    /* let clients = this.state.clients.slice();
-   clients.push({ id: 3, nom: "Domo Bank" });
-    this.setState({clients});*/
   };
 
-  handleSubmit = e => {
-    //copie toujours l'état avant d'agir dessus
-    e.preventDefault();
-    //définition de la valeur des clefs
-    const id = new Date().getTime();
-    const nom = this.state.nouveauClient;
+  handleAdd = client => {
     //définition de nos objets state
-    const client = { id: id, nom: nom };
-    const clients = this.state.clients.slice();
+    const clients = [...this.state.clients];
     //ajout plus changement du state
-    clients.push(client);
-    this.setState({ clients: clients, nouveauClient: "" });
+    console.log(client);
+    clients.push({ client });
+    this.setState({ clients });
   };
-
-  handleChange = e => {
-    console.log(e.currentTarget.value);
-    const value = e.currentTarget.value;
-    this.setState({ nouveauClient: value });
-  };
-
   render() {
     const title = "Liste des clients";
 
@@ -62,21 +46,10 @@ class App extends React.Component {
         {this.state.compteur}
         <ul>
           {this.state.clients.map(client => (
-            <li key={client.id}>
-              {client.nom}
-              <button onClick={() => this.handleDelete(client.id)}>X</button>
-            </li>
+            <Client infosClient={client} onDelete={this.handleDelete} />
           ))}
         </ul>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            onChange={this.handleChange}
-            value={this.state.nouveauClient}
-            type="text"
-            placeholder="ajouter un client"
-          />
-          <button type="submit">Confirmer</button>
-        </form>
+        <ClientForm onClientAdd={this.handleAdd} />
       </div>
     );
   }
